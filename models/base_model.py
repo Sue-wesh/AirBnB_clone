@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """defines a BaseModel class."""
+
 import models
 from uuid import uuid4
 from datetime import datetime
@@ -8,6 +9,8 @@ class BaseModel:
     """defines common attributes/methods for use by other classes."""
 
     def __init__(self, *args, **kwargs):
+        """initialization of attributes."""
+
         fmt = "%Y-%m-%dT%H:%M:%S.%f"
         self.id = str(uuid4())
         self.created_at = datetime.today()
@@ -22,10 +25,12 @@ class BaseModel:
         models.storage.new()
     
     def save(self):
+        """updates the public instance attribute updated_at with the current datetime"""
         self.updated_at = datetime.today()
         models.storage.save()
 
     def to_dict(self):
+        """returns a dictionary containing all keys/values of __dict__ of the instance"""
         my_dict = self.__dict__.copy()
         my_dict["__class__"] = self.__class__.__name__
         my_dict["created_at"] = self.created_at.isoformat()
@@ -33,5 +38,6 @@ class BaseModel:
         return my_dict
 
     def __str__(self):
+        """print: [<class name>] (<self.id>) <self.__dict__>"""
         class_name = self.__clas__.__name__
         return "[{}] ({}) {}".format(class_name, self.id, self.__dict__)
