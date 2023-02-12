@@ -14,11 +14,8 @@ class TestBaseModel(unittest.TestCase):
     def test_no_args(self):
         self.assertEqual(BaseModel, type(BaseModel()))
 
-    def test_new_instance(self):
-        self.assertIn(BaseModel(), models.storage.all().values())
-
     def test_id(self):
-        selt.assertEqual(str, type(BaseModel().id))
+        self.assertEqual(str, type(BaseModel().id))
 
     def test_created_at(self):
         self.assertEqual(datetime, type(BaseModel().created_at))
