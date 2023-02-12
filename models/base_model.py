@@ -24,12 +24,10 @@ class BaseModel:
                     self.__dict__[k] = datetime.strptime(v, fmt)
                 else:
                     self.__dict__[k] = v
-        models.storage.new()
 
     def save(self):
         """updates the attribute updated_at with the current datetime"""
         self.updated_at = datetime.today()
-        models.storage.save()
 
     def to_dict(self):
         """returns a dict with all keys/values of __dict__ of the instance"""
