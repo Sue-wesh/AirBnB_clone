@@ -1,0 +1,37 @@
+#!/usr/bin/env python3
+"""defines a BaseModel class."""
+import models
+from uuid import uuid4
+from datetime import datetime
+
+class BaseModel:
+    """defines common attributes/methods for use by other classes."""
+
+    def __init__(self, *args, **kwargs):
+        fmt = "%Y-%m-%dT%H:%M:%S.%f"
+        self.id = str(uuid4())
+        self.created_at = datetime.today()
+        self.updated_at = datetime.today()
+
+        if len(kwargs) != 0:
+            for k, v in kwargs.items():
+                if k == "created_at" or "updated_at":
+                    self.__dict__[k] = datetime.strptime(v, fmt)
+                else:
+                    self.__dict__[k] = v
+        models.storage.new()
+    
+    def save(self):
+        self.updated_at = datetime.today()
+        models.storage.save()
+
+    def to_dict(self):
+        my_dict = self.__dict__.copy()
+        my_dict["__class__"] = self.__class__.__name__
+        my_dict["created_at"] = self.created_at.isoformat()
+        my_dict["updated_at"] = self.updated_at.isoformat()
+        return my_dict
+
+    def __str__(self):
+        class_name = self.__clas__.__name__
+        return "[{}] ({}) {}".format(class_name, self.id, self.__dict__)
